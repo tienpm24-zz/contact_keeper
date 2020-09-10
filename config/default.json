@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://tienpm24:tienpm24@contactkeeper.8dpml.mongodb.net/<dbname>?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://tienpm24:tienpm24@contactkeeper.8dpml.mongodb.net/<dbname>?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
 }
