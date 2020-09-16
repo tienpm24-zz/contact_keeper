@@ -26,6 +26,7 @@ const Navbar = ({ title, icon }) => {
     </div>
   );
 };
+
 export default Navbar;
 Navbar.propTypes = {
   title: PropTypes.string.isRequired,
