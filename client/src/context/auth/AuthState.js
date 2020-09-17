@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react';
-import AuthContext from './authContext';
-import AuthReducer from './authReducer';
 import axios from 'axios';
+import AuthContext from './authContext';
+import authReducer from './authReducer';
 import setAuthToken from '../../utils/setAuthToken';
 import {
   REGISTER_SUCCESS,
@@ -23,7 +23,7 @@ const AuthState = (props) => {
     error: null,
   };
 
-  const [state, dispatch] = useReducer(AuthReducer, initialState);
+  const [state, dispatch] = useReducer(authReducer, initialState);
 
   // Load User
   const loadUser = async () => {
@@ -48,13 +48,15 @@ const AuthState = (props) => {
         'Content-Type': 'application/json',
       },
     };
+
     try {
-      const res = await axios.post(`/api/users`, formData, config);
+      const res = await axios.post('/api/users', formData, config);
 
       dispatch({
         type: REGISTER_SUCCESS,
         payload: res.data,
       });
+
       loadUser();
     } catch (err) {
       dispatch({
@@ -63,6 +65,7 @@ const AuthState = (props) => {
       });
     }
   };
+
   // Login User
   const login = async (formData) => {
     const config = {
@@ -70,13 +73,15 @@ const AuthState = (props) => {
         'Content-Type': 'application/json',
       },
     };
+
     try {
-      const res = await axios.post(`/api/auth`, formData, config);
+      const res = await axios.post('/api/auth', formData, config);
 
       dispatch({
         type: LOGIN_SUCCESS,
         payload: res.data,
       });
+
       loadUser();
     } catch (err) {
       dispatch({
@@ -87,7 +92,7 @@ const AuthState = (props) => {
   };
 
   // Logout
-  const logOut = () => dispatch({ type: LOGOUT });
+  const logout = () => dispatch({ type: LOGOUT });
 
   // Clear Errors
   const clearErrors = () => dispatch({ type: CLEAR_ERRORS });
@@ -103,7 +108,7 @@ const AuthState = (props) => {
         register,
         loadUser,
         login,
-        logOut,
+        logout,
         clearErrors,
       }}
     >
@@ -111,4 +116,5 @@ const AuthState = (props) => {
     </AuthContext.Provider>
   );
 };
+
 export default AuthState;

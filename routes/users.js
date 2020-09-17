@@ -1,16 +1,15 @@
 const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+
 const User = require('../models/User');
 
-const router = express.Router();
-
-// @route   POST api/users
-// @desc    Regiter a user
-// @access  Public
-
+// @route     POST api/users
+// @desc      Regiter a user
+// @access    Public
 router.post(
   '/',
   [
@@ -31,6 +30,7 @@ router.post(
 
     try {
       let user = await User.findOne({ email });
+
       if (user) {
         return res.status(400).json({ msg: 'User already exists' });
       }
@@ -44,6 +44,7 @@ router.post(
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(password, salt);
+
       await user.save();
 
       const payload = {
@@ -51,6 +52,7 @@ router.post(
           id: user.id,
         },
       };
+
       jwt.sign(
         payload,
         config.get('jwtSecret'),
@@ -62,8 +64,8 @@ router.post(
           res.json({ token });
         }
       );
-    } catch (error) {
-      console.log(error.message);
+    } catch (err) {
+      console.error(err.message);
       res.status(500).send('Server Error');
     }
   }
